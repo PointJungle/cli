@@ -1,0 +1,72 @@
+# GoReleaser configuration of the codeforge CLI (run from cli/).
+# Release: the `cli-release` CI job runs `goreleaser release` on a vX.Y.Z tag and
+# publishes to GitHub (GITHUB_TOKEN: a GitHub App installation token).
+# Check locally: goreleaser check && goreleaser release --snapshot --clean
+version: 2
+
+project_name: codeforge
+
+builds:
+  - id: codeforge
+    main: ./cmd/codeforge
+    binary: codeforge
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Version }} -X main.commit={{ .ShortCommit }} -X main.date={{ .Date }}
+
+archives:
+  - id: codeforge
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "codeforge_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  use: git
+  sort: asc
+  filters:
+    exclude:
+      - "^chore\\(release\\)"
+      - "^docs:"
+      - "^test:"
+  groups:
+    - title: Features
+      regexp: '^feat(\(.+\))?!?:'
+      order: 0
+    - title: Bug fixes
+      regexp: '^fix(\(.+\))?!?:'
+      order: 1
+    - title: Other changes
+      order: 999
+
+force_token: github
+
+release:
+  github:
+    owner: pointjungle
+    name: codeforge-sdk
+  name_template: "codeforge CLI {{ .Version }}"
+  # The tag already exists on GitHub: the sync job creates it before the release.
+  mode: replace
+
+# Homebrew tap (pointjungle/homebrew-tap): published only when HOMEBREW_TAP is
+# "true", once the tap repository exists and the GitHub App can write to it.
+homebrew_casks:
+  - name: codeforge
+    repository:
+      owner: pointjungle
+      name: homebrew-tap
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    homepage: https://github.com/pointjungle/codeforge-sdk
+    description: Command line tool of codeforge
+    license: MIT
+    skip_upload: '{{ if eq (index .Env "HOMEBREW_TAP") "true" }}false{{ else }}true{{ end }}'
