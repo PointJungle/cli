@@ -13,11 +13,13 @@ Downloading codeforge 0.1.0 (darwin/arm64)…
 Installed /Users/ada/.local/bin/codeforge
 ```
 
-The script downloads the latest release from the [GitHub releases](https://github.com/pointjungle/codeforge-cli/releases), checks its SHA-256 against `checksums.txt` and installs `codeforge` in `~/.local/bin`. If that directory is not in your `PATH`, add it to `~/.zshrc`:
+The script downloads the latest release from the [GitHub releases](https://github.com/pointjungle/codeforge-cli/releases), checks its SHA-256 against `checksums.txt` and installs `codeforge` in `~/.local/bin`. If that directory is not in your `PATH`, the script prints the command that adds it for your shell (`~/.zshrc` by default on macOS, `~/.bash_profile` for bash, fish), for example:
 
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 ```
+
+Then open a new terminal.
 
 | Variable | |
 |---|---|

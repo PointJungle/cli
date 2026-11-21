@@ -70,7 +70,35 @@ install -m 0755 "${tmp}/codeforge" "${INSTALL_DIR}/codeforge" 2>/dev/null ||
 	{ cp "${tmp}/codeforge" "${INSTALL_DIR}/codeforge" && chmod 0755 "${INSTALL_DIR}/codeforge"; }
 
 echo "Installed ${INSTALL_DIR}/codeforge"
+
+# Not on the PATH: print the command that adds it, for the user's default shell.
 case ":$PATH:" in
-*":${INSTALL_DIR}:"*) ;;
-*) echo "Add ${INSTALL_DIR} to your PATH to run codeforge." ;;
+*":${INSTALL_DIR}:"*) exit 0 ;;
 esac
+
+# Write the directory as $HOME/... when it is under the home directory.
+case "$INSTALL_DIR" in
+"$HOME"/*) dir_expr="\$HOME/${INSTALL_DIR#"$HOME"/}" ;;
+*) dir_expr="$INSTALL_DIR" ;;
+esac
+
+shell_name=$(basename "${SHELL:-sh}")
+case "$shell_name" in
+zsh) rc="~/.zshrc" ;;
+bash)
+	if [ "$os" = darwin ]; then rc="~/.bash_profile"; else rc="~/.bashrc"; fi
+	;;
+fish) rc="" ;;
+*) rc="~/.profile" ;;
+esac
+
+echo
+echo "${INSTALL_DIR} is not on your PATH. To add it, run:"
+echo
+if [ "$shell_name" = fish ]; then
+	echo "  fish_add_path ${dir_expr}"
+else
+	echo "  echo 'export PATH=\"${dir_expr}:\$PATH\"' >> ${rc}"
+fi
+echo
+echo "then open a new terminal."

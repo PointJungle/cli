@@ -8,11 +8,13 @@ For amd64 and arm64. On Windows with WSL, follow this page inside WSL.
 curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-cli/main/install.sh | sh
 ```
 
-The script downloads the latest release from the [GitHub releases](https://github.com/pointjungle/codeforge-cli/releases), checks its SHA-256 against `checksums.txt` and installs `codeforge` in `~/.local/bin`. If that directory is not in your `PATH`, the script tells you to add it — for example in `~/.bashrc` or `~/.zshrc`:
+The script downloads the latest release from the [GitHub releases](https://github.com/pointjungle/codeforge-cli/releases), checks its SHA-256 against `checksums.txt` and installs `codeforge` in `~/.local/bin`. If that directory is not in your `PATH`, the script prints the command that adds it for your shell (`~/.bashrc`, `~/.zshrc`, fish or `~/.profile`), for example:
 
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 ```
+
+Then open a new terminal.
 
 | Variable | |
 |---|---|
