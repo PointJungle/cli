@@ -6,7 +6,7 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/pointjungle/codeforge-sdk/cli/internal/cli"
+	"github.com/pointjungle/codeforge-cli/internal/cli"
 )
 
 // Set by GoReleaser (-ldflags "-X main.version=…").

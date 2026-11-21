@@ -4,6 +4,7 @@ import (
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"runtime"
 	"testing"
 	"time"
 )
@@ -25,19 +26,22 @@ func TestLocalhostAddr(t *testing.T) {
 }
 
 func TestClientReachesLocalhostSubdomainAndKeepsHost(t *testing.T) {
-	var gotHost string
+	var gotHost, gotAgent string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotHost = r.Host
+		gotHost, gotAgent = r.Host, r.UserAgent()
 	}))
 	defer server.Close()
 	_, port, _ := net.SplitHostPort(server.Listener.Addr().String())
 
-	resp, err := New(5 * time.Second).Get("http://accounts.localhost:" + port + "/")
+	resp, err := New(5*time.Second, UserAgent("1.2.3")).Get("http://accounts.localhost:" + port + "/")
 	if err != nil {
 		t.Fatalf("get: %v", err)
 	}
 	resp.Body.Close()
 	if gotHost != "accounts.localhost:"+port {
 		t.Fatalf("Host header = %q", gotHost)
+	}
+	if want := "codeforge-cli/1.2.3 (" + runtime.GOOS + "; " + runtime.GOARCH + ")"; gotAgent != want {
+		t.Fatalf("User-Agent = %q, want %q", gotAgent, want)
 	}
 }

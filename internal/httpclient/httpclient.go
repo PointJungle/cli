@@ -3,22 +3,44 @@ package httpclient
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"net/http"
+	"runtime"
 	"strings"
 	"time"
 )
 
-// New returns an HTTP client that, like browsers, sends every *.localhost name
-// to this machine (RFC 6761): a local codeforge serves its sign-in pages on
-// names such as accounts.localhost, which DNS servers do not know.
-func New(timeout time.Duration) *http.Client {
+// New returns the CLI's HTTP client. Every request carries userAgent (see
+// UserAgent), so that codeforge can tell CLI versions apart. Like browsers, it
+// sends every *.localhost name to this machine (RFC 6761): a local codeforge
+// serves its sign-in pages on names such as accounts.localhost, which DNS
+// servers do not know.
+func New(timeout time.Duration, userAgent string) *http.Client {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 	dialer := &net.Dialer{Timeout: 30 * time.Second, KeepAlive: 30 * time.Second}
 	transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
 		return dialer.DialContext(ctx, network, LocalhostAddr(addr))
 	}
-	return &http.Client{Timeout: timeout, Transport: transport}
+	return &http.Client{Timeout: timeout, Transport: userAgentTransport{agent: userAgent, next: transport}}
+}
+
+// UserAgent is "codeforge-cli/<version> (<os>; <arch>)".
+func UserAgent(version string) string {
+	return fmt.Sprintf("codeforge-cli/%s (%s; %s)", version, runtime.GOOS, runtime.GOARCH)
+}
+
+type userAgentTransport struct {
+	agent string
+	next  http.RoundTripper
+}
+
+func (t userAgentTransport) RoundTrip(r *http.Request) (*http.Response, error) {
+	if r.Header.Get("User-Agent") == "" {
+		r = r.Clone(r.Context())
+		r.Header.Set("User-Agent", t.agent)
+	}
+	return t.next.RoundTrip(r)
 }
 
 // LocalhostAddr maps "name.localhost:port" to "localhost:port" (resolved by

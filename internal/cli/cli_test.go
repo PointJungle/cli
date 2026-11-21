@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pointjungle/codeforge-sdk/cli/internal/config"
+	"github.com/pointjungle/codeforge-cli/internal/config"
 )
 
 type run struct {

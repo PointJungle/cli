@@ -1,4 +1,4 @@
-module github.com/pointjungle/codeforge-sdk/cli
+module github.com/pointjungle/codeforge-cli
 
 go 1.26.0
 

@@ -4,7 +4,7 @@ For amd64 and arm64. With WSL, you can also install the Linux version inside WSL
 
 ## Download an archive
 
-1. Download `codeforge_<version>_windows_amd64.zip` (or `_arm64.zip`) from the [releases](https://github.com/pointjungle/codeforge-sdk/releases). `checksums.txt` lists the SHA-256 of every archive.
+1. Download `codeforge_<version>_windows_amd64.zip` (or `_arm64.zip`) from the [releases](https://github.com/pointjungle/codeforge-cli/releases). `checksums.txt` lists the SHA-256 of every archive.
 2. Extract `codeforge.exe` to a folder of your own, for example `%LOCALAPPDATA%\Programs\codeforge`.
 3. Add that folder to your `PATH`. In PowerShell:
 
@@ -22,7 +22,7 @@ To check the archive: `(Get-FileHash codeforge_0.1.0_windows_amd64.zip).Hash` mu
 ## Go
 
 ```powershell
-go install github.com/pointjungle/codeforge-sdk/cli/cmd/codeforge@latest
+go install github.com/pointjungle/codeforge-cli/cmd/codeforge@latest
 ```
 
 The binary goes to `%USERPROFILE%\go\bin`.

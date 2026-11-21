@@ -1,21 +1,21 @@
-# codeforge SDK
+# codeforge CLI
 
-The command line tool and the client libraries of **[codeforge](https://codeforge.pointjungle.com)**, PointJungle's platform to deploy and run pipelines.
+`codeforge`, the command line tool of **[codeforge](https://codeforge.pointjungle.com)**, PointJungle's platform to deploy and run pipelines. It works with codeforge from your terminal, your scripts and your AI agents. One binary for Linux, macOS and Windows.
 
 - **codeforge**: https://codeforge.pointjungle.com
 - **Documentation**: https://codeforge.pointjungle.com/docs
 
-## The codeforge CLI
-
-`codeforge` works with codeforge from your terminal, your scripts and your AI agents. It is one binary for Linux, macOS and Windows.
+## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-sdk/main/cli/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-cli/main/install.sh | sh
 ```
 
-On Windows, or for a given version, download an archive from the [releases](https://github.com/pointjungle/codeforge-sdk/releases). With Go: `go install github.com/pointjungle/codeforge-sdk/cli/cmd/codeforge@latest`.
+On Windows, or for a given version, download an archive from the [releases](https://github.com/pointjungle/codeforge-cli/releases). With Go: `go install github.com/pointjungle/codeforge-cli/cmd/codeforge@latest`.
 
-Step by step: [Linux](docs/cli/setup/linux.md) · [macOS](docs/cli/setup/macOS.md) · [Windows](docs/cli/setup/windows.md).
+Step by step: [Linux](docs/setup/linux.md) · [macOS](docs/setup/macOS.md) · [Windows](docs/setup/windows.md).
+
+## Use
 
 ```bash
 codeforge auth login            # sign in through your browser
@@ -27,21 +27,16 @@ Every command speaks JSON with `--json` and returns stable exit codes.
 
 | Documentation | |
 |---|---|
-| [CLI guide](docs/cli/README.md) | prerequisites, setup, sign in, commands, exit codes (also on [codeforge's docs](https://codeforge.pointjungle.com/docs/cli)) |
-| [Settings](docs/cli/reference/settings.md) | configuration directory, environment variables |
-| [Token storage](docs/cli/reference/token_storage.md) | where the CLI keeps your sign-in |
+| [CLI guide](docs/README.md) | prerequisites, setup, sign in, commands, exit codes (also on [codeforge's docs](https://codeforge.pointjungle.com/docs/cli)) |
+| [Settings](docs/reference/settings.md) | configuration directory, environment variables |
+| [Token storage](docs/reference/token_storage.md) | where the CLI keeps your sign-in |
+| [Changelog](CHANGELOG.md) | what changed in each release |
 
-## Client libraries for pipeline development
-
-A pipeline is your code; a client library connects it to codeforge: it reads the job's inputs, reports results, sends logs and reads variables. Each library comes with its documentation and examples.
-
-| Language | Library | Status |
-|---|---|---|
-| Python | [`pointjungle-codeforge-sdk`](python/README.md) | coming soon |
+Client libraries to write pipelines live in their own repositories; the first, for Python, is coming soon.
 
 ## Contributing
 
-Issues and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md) and the [CLI developer docs](docs/cli/development/README.md).
+Issues and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md) and the [developer docs](docs/development/README.md).
 
 ## License
 

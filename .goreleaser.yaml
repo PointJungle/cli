@@ -1,0 +1,40 @@
+# GoReleaser configuration of the codeforge CLI: builds only. On a vX.Y.Z tag,
+# pj-goreleaser-build (pointjungle-ci `go` component) builds the archives and
+# pj-github-publish (`github` component) publishes them in the GitHub release,
+# with the CHANGELOG.md section written by pj-release as notes.
+# Check locally: goreleaser check && goreleaser release --snapshot --clean
+version: 2
+
+project_name: codeforge
+
+builds:
+  - id: codeforge
+    main: ./cmd/codeforge
+    binary: codeforge
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Version }} -X main.commit={{ .ShortCommit }} -X main.date={{ .Date }}
+
+archives:
+  - id: codeforge
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "codeforge_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+# Release notes come from CHANGELOG.md (changelog fragments), not from git.
+changelog:
+  disable: true
+
+# Publication is pointjungle-ci's github component (GitHub App).
+release:
+  disable: true

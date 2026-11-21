@@ -4,7 +4,7 @@ Thank you for helping improve codeforge's CLI and SDKs.
 
 ## Issues
 
-Bugs, questions and ideas are welcome in [GitHub issues](https://github.com/pointjungle/codeforge-sdk/issues). For a bug, include the command, `codeforge version`, your system, and the output with `--json` if it helps. Never paste tokens or the content of `tokens.json`.
+Bugs, questions and ideas are welcome in [GitHub issues](https://github.com/pointjungle/codeforge-cli/issues). For a bug, include the command, `codeforge version`, your system, and the output with `--json` if it helps. Never paste tokens or the content of `tokens.json`.
 
 For a security issue, do not open a public issue: write to the maintainers through the contact given on [codeforge.pointjungle.com](https://codeforge.pointjungle.com).
 
@@ -15,7 +15,7 @@ This repository is published from PointJungle's internal repository: each commit
 Before you open one:
 
 - open an issue first for anything larger than a fix, so we can agree on the approach;
-- follow [docs/cli/development/](docs/cli/development/README.md) — checks, layout and the rules for new commands;
-- write commit messages as [Conventional Commits](https://www.conventionalcommits.org) (`feat(cli): …`, `fix(cli): …`): release notes are generated from them.
+- follow [docs/development/](docs/development/README.md) — checks, layout and the rules for new commands;
+- write commit messages as [Conventional Commits](https://www.conventionalcommits.org) (`feat: …`, `fix: …`), for readers of this repository.
 
 By contributing, you agree that your contribution is licensed under the [MIT License](LICENSE).

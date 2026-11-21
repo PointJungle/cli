@@ -4,15 +4,14 @@ How the CLI is built, tested and released. For how to use it, see [the CLI guide
 
 ## Prerequisites
 
-- Go, at the version in `cli/go.mod` or later.
+- Go, at the version in `go.mod` or later.
 - [GoReleaser](https://goreleaser.com) v2, only to check the release configuration or build every platform locally: `go install github.com/goreleaser/goreleaser/v2@latest`.
 
 ## Checks
 
-Run them from `cli/` before opening a pull request; CI runs the same ones.
+Run them before opening a pull request; CI runs the same ones.
 
 ```bash
-cd cli
 gofmt -l .                     # must print nothing
 go vet ./...
 go test -race ./...
@@ -24,16 +23,16 @@ goreleaser release --snapshot --clean --skip=publish   # builds every platform i
 ## Layout
 
 ```
-cli/
-  cmd/codeforge/          entry point; version, commit and date injected by GoReleaser
-  internal/cli/           commands, output, exit codes
-  internal/config/        settings resolution, host normalization
-  internal/tokenstore/    keychain / file token storage
-  internal/signin/        OIDC discovery, loopback + PKCE, device flow, refresh, revoke
-  internal/api/           authenticated API calls with automatic refresh
-  internal/browser/       open a URL in the browser (WSL included)
-  .goreleaser.yaml        release builds
-  install.sh              install script served from main
+cmd/codeforge/          entry point; version, commit and date injected by GoReleaser
+internal/cli/           commands, output, exit codes
+internal/config/        settings resolution, host normalization
+internal/tokenstore/    keychain / file token storage
+internal/signin/        OIDC discovery, loopback + PKCE, device flow, refresh, revoke
+internal/api/           authenticated API calls with automatic refresh
+internal/httpclient/    HTTP client: User-Agent, *.localhost to this machine
+internal/browser/       open a URL in the browser (WSL included)
+.goreleaser.yaml        release builds
+install.sh              install script served from main
 ```
 
 ## How sign-in works
@@ -61,9 +60,9 @@ Tests in `internal/cli/` run commands end to end against a fake codeforge (`fake
 
 ## Releases
 
-Maintainers publish releases. Each release is a `vX.Y.Z` tag, with a matching `cli/vX.Y.Z` tag for the Go module, and GoReleaser:
+Maintainers publish releases. Each pull request that changes the CLI adds a changelog entry; a release gathers them in [CHANGELOG.md](https://github.com/pointjungle/codeforge-cli/blob/main/CHANGELOG.md) and is tagged `vX.Y.Z`. Then:
 
-- builds Linux, macOS and Windows binaries for amd64 and arm64 (`cli/.goreleaser.yaml`);
-- creates the [GitHub release](https://github.com/pointjungle/codeforge-sdk/releases) with the archives and `checksums.txt`, where `install.sh` downloads them;
-- writes the release notes from the Conventional Commits since the previous release (`feat` and `fix` are grouped);
-- updates the Homebrew cask in `pointjungle/homebrew-tap`.
+- [GoReleaser](https://goreleaser.com) builds Linux, macOS and Windows binaries for amd64 and arm64 (`.goreleaser.yaml`), with the version from the tag;
+- the [GitHub release](https://github.com/pointjungle/codeforge-cli/releases) gets the archives and `checksums.txt`, where `install.sh` downloads them, and the release's changelog entries as notes.
+
+`go install github.com/pointjungle/codeforge-cli/cmd/codeforge@vX.Y.Z` installs a given release.

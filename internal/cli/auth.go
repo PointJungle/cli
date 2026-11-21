@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/pointjungle/codeforge-sdk/cli/internal/api"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/signin"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/tokenstore"
+	"github.com/pointjungle/codeforge-cli/internal/api"
+	"github.com/pointjungle/codeforge-cli/internal/signin"
+	"github.com/pointjungle/codeforge-cli/internal/tokenstore"
 )
 
 type userResult struct {

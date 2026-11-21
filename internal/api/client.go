@@ -16,8 +16,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pointjungle/codeforge-sdk/cli/internal/signin"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/tokenstore"
+	"github.com/pointjungle/codeforge-cli/internal/signin"
+	"github.com/pointjungle/codeforge-cli/internal/tokenstore"
 )
 
 var (

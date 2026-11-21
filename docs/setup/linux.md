@@ -5,10 +5,10 @@ For amd64 and arm64. On Windows with WSL, follow this page inside WSL.
 ## Install script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-sdk/main/cli/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-cli/main/install.sh | sh
 ```
 
-The script downloads the latest release from the [GitHub releases](https://github.com/pointjungle/codeforge-sdk/releases), checks its SHA-256 against `checksums.txt` and installs `codeforge` in `~/.local/bin`. If that directory is not in your `PATH`, the script tells you to add it — for example in `~/.bashrc` or `~/.zshrc`:
+The script downloads the latest release from the [GitHub releases](https://github.com/pointjungle/codeforge-cli/releases), checks its SHA-256 against `checksums.txt` and installs `codeforge` in `~/.local/bin`. If that directory is not in your `PATH`, the script tells you to add it — for example in `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
@@ -21,7 +21,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 ## Download an archive
 
-Download `codeforge_<version>_linux_amd64.tar.gz` (or `_arm64`) from the [releases](https://github.com/pointjungle/codeforge-sdk/releases), check it against `checksums.txt`, then:
+Download `codeforge_<version>_linux_amd64.tar.gz` (or `_arm64`) from the [releases](https://github.com/pointjungle/codeforge-cli/releases), check it against `checksums.txt`, then:
 
 ```bash
 tar -xzf codeforge_0.1.0_linux_amd64.tar.gz codeforge
@@ -31,7 +31,7 @@ install -m 0755 codeforge ~/.local/bin/codeforge
 ## Go
 
 ```bash
-go install github.com/pointjungle/codeforge-sdk/cli/cmd/codeforge@latest
+go install github.com/pointjungle/codeforge-cli/cmd/codeforge@latest
 ```
 
 The binary goes to `$(go env GOPATH)/bin`.

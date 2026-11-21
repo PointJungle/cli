@@ -1,14 +1,14 @@
 #!/bin/sh
 # Install the codeforge CLI from the latest GitHub release.
 #
-#   curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-sdk/main/cli/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-cli/main/install.sh | sh
 #
 # Environment:
 #   CODEFORGE_VERSION      a version to install (e.g. 0.1.0); default: the latest release
 #   CODEFORGE_INSTALL_DIR  where to put the binary; default: $HOME/.local/bin
 set -eu
 
-REPO="https://github.com/pointjungle/codeforge-sdk"
+REPO="https://github.com/pointjungle/codeforge-cli"
 INSTALL_DIR="${CODEFORGE_INSTALL_DIR:-$HOME/.local/bin}"
 
 fail() {

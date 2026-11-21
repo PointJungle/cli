@@ -21,11 +21,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/pointjungle/codeforge-sdk/cli/internal/api"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/browser"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/config"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/httpclient"
-	"github.com/pointjungle/codeforge-sdk/cli/internal/tokenstore"
+	"github.com/pointjungle/codeforge-cli/internal/api"
+	"github.com/pointjungle/codeforge-cli/internal/browser"
+	"github.com/pointjungle/codeforge-cli/internal/config"
+	"github.com/pointjungle/codeforge-cli/internal/httpclient"
+	"github.com/pointjungle/codeforge-cli/internal/tokenstore"
 )
 
 // Exit codes.
@@ -72,7 +72,7 @@ func NewApp(build Build) *App {
 		Stderr:       os.Stderr,
 		Getenv:       os.Getenv,
 		Cwd:          cwd,
-		HTTP:         httpclient.New(30 * time.Second),
+		HTTP:         httpclient.New(30*time.Second, httpclient.UserAgent(build.Version)),
 		OpenBrowser:  browser.Open,
 		Now:          time.Now,
 		LoginTimeout: 5 * time.Minute,

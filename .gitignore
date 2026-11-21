@@ -1,2 +1,7 @@
 .go/
 .DS_Store
+dist/
+coverage.out
+/codeforge
+.venv/
+__pycache__/
