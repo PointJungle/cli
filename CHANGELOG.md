@@ -6,6 +6,13 @@ Towncrier aggregates fragments from `changelog.d/` at release time.
 
 <!-- towncrier release notes start -->
 
+## v0.3.0 (2026-11-21)
+
+### Features
+
+- When the install directory is not on your `PATH`, the install script now prints the exact command that adds it for your shell (zsh, bash, fish or `~/.profile`).
+
+
 ## v0.2.0 (2026-11-21)
 
 ### Features
