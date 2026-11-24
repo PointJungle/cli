@@ -6,6 +6,16 @@ Towncrier aggregates fragments from `changelog.d/` at release time.
 
 <!-- towncrier release notes start -->
 
+## v1.0.0 (2026-11-24)
+
+### Breaking changes
+
+- The command is now `pj`, the PointJungle CLI: install it with `brew install pointjungle/tap/pj`, the install script or `go install github.com/pointjungle/cli/cmd/pj@latest`. The repository moved to https://github.com/PointJungle/cli.
+
+  - Remove the old `codeforge` binary (for example `rm ~/.local/bin/codeforge`).
+  - Sign in again with `pj auth login`: the CLI now keeps its settings and tokens under `pointjungle` (configuration directory and keychain service) and reads `PJ_*` environment variables instead of `CODEFORGE_*`.
+
+
 ## v0.3.0 (2026-11-21)
 
 ### Features
