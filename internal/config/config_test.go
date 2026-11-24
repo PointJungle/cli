@@ -37,7 +37,7 @@ func TestResolveOrder(t *testing.T) {
 	dir := t.TempDir()
 	project := t.TempDir()
 	nested := filepath.Join(project, "a", "b")
-	if err := os.MkdirAll(filepath.Join(project, ".codeforge"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(project, ".pointjungle"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.MkdirAll(nested, 0o755); err != nil {
@@ -50,10 +50,10 @@ func TestResolveOrder(t *testing.T) {
 		}
 	}
 	write(filepath.Join(dir, "config.toml"), `host = "config.example.com"`)
-	write(filepath.Join(project, ".codeforge", "project.json"), `{"host": "project.example.com"}`)
+	write(filepath.Join(project, ".pointjungle", "project.json"), `{"host": "project.example.com"}`)
 
-	base := map[string]string{"CODEFORGE_CONFIG_DIR": dir}
-	withEnv := map[string]string{"CODEFORGE_CONFIG_DIR": dir, "CODEFORGE_HOST": "env.example.com"}
+	base := map[string]string{"PJ_CONFIG_DIR": dir}
+	withEnv := map[string]string{"PJ_CONFIG_DIR": dir, "PJ_HOST": "env.example.com"}
 
 	cases := []struct {
 		name   string
@@ -67,7 +67,7 @@ func TestResolveOrder(t *testing.T) {
 		{"then the environment", "", nested, withEnv, "https://env.example.com", SourceEnv},
 		{"then the directory's link, found in a parent", "", nested, base, "https://project.example.com", SourceProject},
 		{"then config.toml", "", t.TempDir(), base, "https://config.example.com", SourceConfig},
-		{"then the default", "", t.TempDir(), map[string]string{"CODEFORGE_CONFIG_DIR": t.TempDir()}, DefaultHost, SourceDefault},
+		{"then the default", "", t.TempDir(), map[string]string{"PJ_CONFIG_DIR": t.TempDir()}, DefaultHost, SourceDefault},
 	}
 	for _, c := range cases {
 		got, err := Resolve(c.flag, c.cwd, env(c.env))
@@ -82,7 +82,7 @@ func TestResolveRejectsBrokenFiles(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(dir, "config.toml"), []byte("host = "), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Resolve("", t.TempDir(), env(map[string]string{"CODEFORGE_CONFIG_DIR": dir})); err == nil {
+	if _, err := Resolve("", t.TempDir(), env(map[string]string{"PJ_CONFIG_DIR": dir})); err == nil {
 		t.Fatal("a broken config.toml must be reported")
 	}
 }

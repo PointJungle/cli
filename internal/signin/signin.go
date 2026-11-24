@@ -1,4 +1,4 @@
-// Package signin signs a person in to codeforge through its OpenID Connect
+// Package signin signs a person in to PointJungle through its OpenID Connect
 // identity provider, and keeps the resulting tokens fresh.
 //
 // The host tells the CLI what it needs (GET <host>/api/cli/config: the API URL,
@@ -251,7 +251,7 @@ func signedInTarget(raw, errCode string, err error) (string, bool) {
 
 func writeCallbackPage(w http.ResponseWriter, err error) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	title, body := "Signed in to codeforge", "You can close this tab and go back to your terminal."
+	title, body := "Signed in to PointJungle", "You can close this tab and go back to your terminal."
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		title, body = "Sign-in failed", html.EscapeString(err.Error())

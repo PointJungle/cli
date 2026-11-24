@@ -1,18 +1,18 @@
 #!/bin/sh
-# Install the codeforge CLI from the latest GitHub release.
+# Install the PointJungle CLI from the latest GitHub release.
 #
-#   curl -fsSL https://raw.githubusercontent.com/pointjungle/codeforge-cli/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/PointJungle/cli/main/install.sh | sh
 #
 # Environment:
-#   CODEFORGE_VERSION      a version to install (e.g. 0.1.0); default: the latest release
-#   CODEFORGE_INSTALL_DIR  where to put the binary; default: $HOME/.local/bin
+#   PJ_VERSION      a version to install (e.g. 0.1.0); default: the latest release
+#   PJ_INSTALL_DIR  where to put the binary; default: $HOME/.local/bin
 set -eu
 
-REPO="https://github.com/pointjungle/codeforge-cli"
-INSTALL_DIR="${CODEFORGE_INSTALL_DIR:-$HOME/.local/bin}"
+REPO="https://github.com/PointJungle/cli"
+INSTALL_DIR="${PJ_INSTALL_DIR:-$HOME/.local/bin}"
 
 fail() {
-	echo "codeforge install: $*" >&2
+	echo "pj install: $*" >&2
 	exit 1
 }
 
@@ -35,7 +35,7 @@ arm64 | aarch64) arch=arm64 ;;
 *) fail "unsupported architecture $(uname -m)" ;;
 esac
 
-version="${CODEFORGE_VERSION:-}"
+version="${PJ_VERSION:-}"
 if [ -z "$version" ]; then
 	# /releases/latest redirects to /releases/tag/<tag>; no API call, no rate limit.
 	latest=$(curl -fsSL -o /dev/null -w '%{url_effective}' "${REPO}/releases/latest") ||
@@ -46,12 +46,12 @@ if [ -z "$version" ]; then
 	version="${tag#v}"
 fi
 
-archive="codeforge_${version}_${os}_${arch}.tar.gz"
+archive="pj_${version}_${os}_${arch}.tar.gz"
 base="${REPO}/releases/download/v${version}"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
-echo "Downloading codeforge ${version} (${os}/${arch})…"
+echo "Downloading pj ${version} (${os}/${arch})…"
 curl -fsSL "${base}/${archive}" -o "${tmp}/${archive}" || fail "download failed: ${base}/${archive}"
 curl -fsSL "${base}/checksums.txt" -o "${tmp}/checksums.txt" || fail "download failed: checksums.txt"
 
@@ -64,12 +64,12 @@ else
 fi
 [ "$expected" = "$actual" ] || fail "checksum mismatch for ${archive}"
 
-tar -xzf "${tmp}/${archive}" -C "$tmp" codeforge
+tar -xzf "${tmp}/${archive}" -C "$tmp" pj
 mkdir -p "$INSTALL_DIR"
-install -m 0755 "${tmp}/codeforge" "${INSTALL_DIR}/codeforge" 2>/dev/null ||
-	{ cp "${tmp}/codeforge" "${INSTALL_DIR}/codeforge" && chmod 0755 "${INSTALL_DIR}/codeforge"; }
+install -m 0755 "${tmp}/pj" "${INSTALL_DIR}/pj" 2>/dev/null ||
+	{ cp "${tmp}/pj" "${INSTALL_DIR}/pj" && chmod 0755 "${INSTALL_DIR}/pj"; }
 
-echo "Installed ${INSTALL_DIR}/codeforge"
+echo "Installed ${INSTALL_DIR}/pj"
 
 # Not on the PATH: print the command that adds it, for the user's default shell.
 case ":$PATH:" in

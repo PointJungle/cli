@@ -2,17 +2,17 @@
 
 ## Configuration directory
 
-The CLI keeps its files in `codeforge` in your user configuration directory, or in `CODEFORGE_CONFIG_DIR`:
+The CLI keeps its files in `pj` in your user configuration directory, or in `PJ_CONFIG_DIR`:
 
 | System | Directory |
 |---|---|
-| Linux | `~/.config/codeforge` (or `$XDG_CONFIG_HOME/codeforge`) |
-| macOS | `~/Library/Application Support/codeforge` |
-| Windows | `%AppData%\codeforge` |
+| Linux | `~/.config/pointjungle` (or `$XDG_CONFIG_HOME/pointjungle`) |
+| macOS | `~/Library/Application Support/pointjungle` |
+| Windows | `%AppData%\pointjungle` |
 
 ## Environment variables
 
 | Variable | |
 |---|---|
-| `CODEFORGE_CONFIG_DIR` | the configuration directory |
-| `CODEFORGE_TOKEN_STORE` | `file` to keep tokens in a file instead of the keychain (see [Token storage](token_storage.md)) |
+| `PJ_CONFIG_DIR` | the configuration directory |
+| `PJ_TOKEN_STORE` | `file` to keep tokens in a file instead of the keychain (see [Token storage](token_storage.md)) |

@@ -1,4 +1,4 @@
-# Developing the codeforge CLI
+# Developing the PointJungle CLI
 
 How the CLI is built, tested and released. For how to use it, see [the CLI guide](../README.md).
 
@@ -23,7 +23,7 @@ goreleaser release --snapshot --clean --skip=publish   # builds every platform i
 ## Layout
 
 ```
-cmd/codeforge/          entry point; version, commit and date injected by GoReleaser
+cmd/pj/          entry point; version, commit and date injected by GoReleaser
 internal/cli/           commands, output, exit codes
 internal/config/        settings resolution, host normalization
 internal/tokenstore/    keychain / file token storage
@@ -54,15 +54,15 @@ API calls send `Authorization: Bearer <access token>`. The token is refreshed wh
 
 ## Tests
 
-Tests in `internal/cli/` run commands end to end against a fake codeforge (`fake_test.go`): an `httptest` server playing both the API and the identity provider. It checks what a real server checks — PKCE S256, the loopback `redirect_uri`, refresh token rotation, revocation — so a test that passes against it exercises the real protocol. The browser is replaced by a function that follows the authorization URL. Add a scenario to the fake rather than mocking `signin` or `api`.
+Tests in `internal/cli/` run commands end to end against a fake PointJungle server (`fake_test.go`): an `httptest` server playing both the API and the identity provider. It checks what a real server checks — PKCE S256, the loopback `redirect_uri`, refresh token rotation, revocation — so a test that passes against it exercises the real protocol. The browser is replaced by a function that follows the authorization URL. Add a scenario to the fake rather than mocking `signin` or `api`.
 
 `internal/tokenstore` uses `keyring.MockInit()`, so tests never touch your keychain.
 
 ## Releases
 
-Maintainers publish releases. Each pull request that changes the CLI adds a changelog entry; a release gathers them in [CHANGELOG.md](https://github.com/pointjungle/codeforge-cli/blob/main/CHANGELOG.md) and is tagged `vX.Y.Z`. Then:
+Maintainers publish releases. Each pull request that changes the CLI adds a changelog entry; a release gathers them in [CHANGELOG.md](https://github.com/PointJungle/cli/blob/main/CHANGELOG.md) and is tagged `vX.Y.Z`. Then:
 
 - [GoReleaser](https://goreleaser.com) builds Linux, macOS and Windows binaries for amd64 and arm64 (`.goreleaser.yaml`), with the version from the tag;
-- the [GitHub release](https://github.com/pointjungle/codeforge-cli/releases) gets the archives and `checksums.txt`, where `install.sh` downloads them, and the release's changelog entries as notes.
+- the [GitHub release](https://github.com/PointJungle/cli/releases) gets the archives and `checksums.txt`, where `install.sh` downloads them, and the release's changelog entries as notes.
 
-`go install github.com/pointjungle/codeforge-cli/cmd/codeforge@vX.Y.Z` installs a given release.
+`go install github.com/pointjungle/cli/cmd/pj@vX.Y.Z` installs a given release.

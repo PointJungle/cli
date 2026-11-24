@@ -12,7 +12,7 @@ func (a *App) versionCommand() *cobra.Command {
 		Short: "Show the CLI's version",
 		Args:  noArgs,
 		RunE: func(*cobra.Command, []string) error {
-			a.result(a.Build, fmt.Sprintf("codeforge %s (%s, %s)", a.Build.Version, a.Build.Commit, a.Build.Date))
+			a.result(a.Build, fmt.Sprintf("pj %s (%s, %s)", a.Build.Version, a.Build.Commit, a.Build.Date))
 			return nil
 		},
 	}

@@ -1,10 +1,10 @@
 # Contributing
 
-Thank you for helping improve codeforge's CLI and SDKs.
+Thank you for helping improve PointJungle's CLI and SDKs.
 
 ## Issues
 
-Bugs, questions and ideas are welcome in [GitHub issues](https://github.com/pointjungle/codeforge-cli/issues). For a bug, include the command, `codeforge version`, your system, and the output with `--json` if it helps. Never paste tokens or the content of `tokens.json`.
+Bugs, questions and ideas are welcome in [GitHub issues](https://github.com/PointJungle/cli/issues). For a bug, include the command, `pj version`, your system, and the output with `--json` if it helps. Never paste tokens or the content of `tokens.json`.
 
 For a security issue, do not open a public issue: write to the maintainers through the contact given on [codeforge.pointjungle.com](https://codeforge.pointjungle.com).
 

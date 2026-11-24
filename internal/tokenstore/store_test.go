@@ -81,12 +81,12 @@ func TestOpenFallsBackToFileWithoutKeychain(t *testing.T) {
 
 func TestFileStoreForced(t *testing.T) {
 	s := Open(t.TempDir(), func(k string) string {
-		if k == "CODEFORGE_TOKEN_STORE" {
+		if k == "PJ_TOKEN_STORE" {
 			return "file"
 		}
 		return ""
 	})
 	if _, ok := s.(*FileStore); !ok {
-		t.Fatalf("CODEFORGE_TOKEN_STORE=file must give the file store, got %T", s)
+		t.Fatalf("PJ_TOKEN_STORE=file must give the file store, got %T", s)
 	}
 }

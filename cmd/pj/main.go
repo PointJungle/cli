@@ -1,4 +1,4 @@
-// Command codeforge is the command line tool of codeforge.
+// Command pj is the command line tool of PointJungle.
 package main
 
 import (
@@ -6,7 +6,7 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/pointjungle/codeforge-cli/internal/cli"
+	"github.com/pointjungle/cli/internal/cli"
 )
 
 // Set by GoReleaser (-ldflags "-X main.version=…").

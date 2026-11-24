@@ -3,9 +3,9 @@
 // Every setting is taken from the first place that defines it:
 //
 //  1. a command-line flag (--host);
-//  2. an environment variable (CODEFORGE_HOST);
-//  3. the directory's link, .codeforge/project.json in the current directory
-//     or one of its parents (written by `codeforge link`);
+//  2. an environment variable (PJ_HOST);
+//  3. the directory's link, .pointjungle/project.json in the current directory
+//     or one of its parents (written by `pj link`);
 //  4. the user's configuration file, config.toml in the configuration
 //     directory;
 //  5. the built-in default.
@@ -41,7 +41,7 @@ const (
 
 // Settings are the resolved settings of one command.
 type Settings struct {
-	// Host is the base URL of the codeforge API, e.g. https://api.codeforge.pointjungle.com.
+	// Host is the base URL of the PointJungle API, e.g. https://api.codeforge.pointjungle.com.
 	Host       string `json:"host"`
 	HostSource Source `json:"host_source"`
 	// Dir is the configuration directory (config.toml, tokens file).
@@ -56,17 +56,17 @@ type projectLink struct {
 	Host string `json:"host"`
 }
 
-// Dir returns the configuration directory: $CODEFORGE_CONFIG_DIR, or
-// "codeforge" in the OS's user configuration directory (~/.config on Linux).
+// Dir returns the configuration directory: $PJ_CONFIG_DIR, or
+// "pointjungle" in the OS's user configuration directory (~/.config on Linux).
 func Dir(getenv func(string) string) (string, error) {
-	if dir := getenv("CODEFORGE_CONFIG_DIR"); dir != "" {
+	if dir := getenv("PJ_CONFIG_DIR"); dir != "" {
 		return dir, nil
 	}
 	base, err := os.UserConfigDir()
 	if err != nil {
 		return "", fmt.Errorf("no configuration directory: %w", err)
 	}
-	return filepath.Join(base, "codeforge"), nil
+	return filepath.Join(base, "pointjungle"), nil
 }
 
 // Resolve resolves the settings for a command run in cwd.
@@ -79,8 +79,8 @@ func Resolve(flagHost, cwd string, getenv func(string) string) (Settings, error)
 	switch {
 	case flagHost != "":
 		raw, source = flagHost, SourceFlag
-	case getenv("CODEFORGE_HOST") != "":
-		raw, source = getenv("CODEFORGE_HOST"), SourceEnv
+	case getenv("PJ_HOST") != "":
+		raw, source = getenv("PJ_HOST"), SourceEnv
 	default:
 		if host, err := projectHost(cwd); err != nil {
 			return Settings{}, err
@@ -139,10 +139,10 @@ func isLoopback(hostport string) bool {
 	return host == "localhost" || strings.HasSuffix(host, ".localhost") || host == "127.0.0.1" || host == "::1"
 }
 
-// projectHost reads the host of the nearest .codeforge/project.json.
+// projectHost reads the host of the nearest .pointjungle/project.json.
 func projectHost(cwd string) (string, error) {
 	for dir := cwd; ; dir = filepath.Dir(dir) {
-		path := filepath.Join(dir, ".codeforge", "project.json")
+		path := filepath.Join(dir, ".pointjungle", "project.json")
 		data, err := os.ReadFile(path)
 		if err == nil {
 			var link projectLink

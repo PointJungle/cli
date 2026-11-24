@@ -41,7 +41,7 @@ func TestClientReachesLocalhostSubdomainAndKeepsHost(t *testing.T) {
 	if gotHost != "accounts.localhost:"+port {
 		t.Fatalf("Host header = %q", gotHost)
 	}
-	if want := "codeforge-cli/1.2.3 (" + runtime.GOOS + "; " + runtime.GOARCH + ")"; gotAgent != want {
+	if want := "pj-cli/1.2.3 (" + runtime.GOOS + "; " + runtime.GOARCH + ")"; gotAgent != want {
 		t.Fatalf("User-Agent = %q, want %q", gotAgent, want)
 	}
 }

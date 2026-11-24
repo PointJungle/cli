@@ -4,7 +4,7 @@
 // Credential Manager, the Secret Service on Linux). When no keychain is
 // available — a server, a container, WSL without a desktop session — they go
 // to a tokens.json file readable by the user only (0600) in the configuration
-// directory. CODEFORGE_TOKEN_STORE=file forces the file.
+// directory. PJ_TOKEN_STORE=file forces the file.
 package tokenstore
 
 import (
@@ -43,13 +43,13 @@ type Store interface {
 	Delete(host string) error
 }
 
-const keyringService = "codeforge"
+const keyringService = "pointjungle"
 
 // Open returns the store to use: the keychain with a file fallback, or the
-// file only when CODEFORGE_TOKEN_STORE=file.
+// file only when PJ_TOKEN_STORE=file.
 func Open(dir string, getenv func(string) string) Store {
 	file := &FileStore{Path: filepath.Join(dir, "tokens.json")}
-	if getenv("CODEFORGE_TOKEN_STORE") == "file" {
+	if getenv("PJ_TOKEN_STORE") == "file" {
 		return file
 	}
 	return &autoStore{keyring: KeyringStore{}, file: file}

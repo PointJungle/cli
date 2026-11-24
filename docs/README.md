@@ -1,11 +1,11 @@
-# The codeforge CLI
+# The PointJungle CLI
 
-`codeforge` works with [codeforge](https://codeforge.pointjungle.com) from your terminal, your scripts and your AI agents. It is one binary for Linux, macOS and Windows (amd64 and arm64).
+`pj` works with [PointJungle](https://codeforge.pointjungle.com) from your terminal, your scripts and your AI agents. It is one binary for Linux, macOS and Windows (amd64 and arm64).
 
 ## Prerequisites
 
-- A PointJungle account. Create one by signing up on [codeforge](https://codeforge.pointjungle.com).
-- A browser on the machine where you run `codeforge`, to sign in.
+- A PointJungle account. Create one by signing up on [PointJungle](https://codeforge.pointjungle.com).
+- A browser on the machine where you run `pj`, to sign in.
 
 ## Setup
 
@@ -24,7 +24,7 @@ Archive or `go install`: [setup/windows.md](setup/windows.md).
 ## Sign in
 
 ```console
-$ codeforge auth login
+$ pj auth login
 Opening your browser to sign in. If it does not open, visit:
 
   https://api.codeforge.pointjungle.com/identity/o/authorize?client_id=codeforge-cli&…
@@ -40,11 +40,11 @@ Where the tokens are kept: [Token storage](reference/token_storage.md).
 
 | Command | Flags | Description |
 |---|---|---|
-| `codeforge auth login` | `--no-browser`: print the sign-in URL instead of opening a browser<br>`--device`: sign in with a code on another device (not available on codeforge yet) | Sign in through your browser |
-| `codeforge auth status` | | Show who you are signed in as; exit code `3` when not signed in |
-| `codeforge auth status --json` | | The same as one JSON document: `host`, `signed_in`, `user` (`id`, `email`, `display_name`), `expires_at` |
-| `codeforge auth logout` | | End the session and forget the tokens; not an error when already signed out |
-| `codeforge version` | | Version, commit and build date |
+| `pj auth login` | `--no-browser`: print the sign-in URL instead of opening a browser<br>`--device`: sign in with a code on another device (not available on PointJungle yet) | Sign in through your browser |
+| `pj auth status` | | Show who you are signed in as; exit code `3` when not signed in |
+| `pj auth status --json` | | The same as one JSON document: `host`, `signed_in`, `user` (`id`, `email`, `display_name`), `expires_at` |
+| `pj auth logout` | | End the session and forget the tokens; not an error when already signed out |
+| `pj version` | | Version, commit and build date |
 
 Every command also takes `--json` (one JSON document on stdout, see below) and `-h`, `--help`.
 

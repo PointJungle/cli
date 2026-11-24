@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/pointjungle/codeforge-cli/internal/api"
-	"github.com/pointjungle/codeforge-cli/internal/signin"
-	"github.com/pointjungle/codeforge-cli/internal/tokenstore"
+	"github.com/pointjungle/cli/internal/api"
+	"github.com/pointjungle/cli/internal/signin"
+	"github.com/pointjungle/cli/internal/tokenstore"
 )
 
 type userResult struct {
@@ -29,7 +29,7 @@ type statusResult struct {
 func (a *App) authCommand() *cobra.Command {
 	auth := &cobra.Command{
 		Use:   "auth",
-		Short: "Sign in to codeforge, sign out, see who you are",
+		Short: "Sign in to PointJungle, sign out, see who you are",
 		Args:  noArgs,
 	}
 	auth.AddCommand(a.loginCommand(), a.logoutCommand(), a.statusCommand())
@@ -40,8 +40,8 @@ func (a *App) loginCommand() *cobra.Command {
 	var device, noBrowser bool
 	cmd := &cobra.Command{
 		Use:   "login",
-		Short: "Sign in through codeforge's identity provider",
-		Long: "Opens your browser on codeforge's sign-in page and waits for it to\n" +
+		Short: "Sign in through PointJungle's identity provider",
+		Long: "Opens your browser on PointJungle's sign-in page and waits for it to\n" +
 			"redirect to a local port. With --device, shows a code to enter on any\n" +
 			"device instead. One sign-in is kept per host.",
 		Args: noArgs,
@@ -72,7 +72,7 @@ func (a *App) loginCommand() *cobra.Command {
 			token, err := login(ctx, cfg, discovery)
 			if errors.Is(err, signin.ErrDeviceUnavailable) {
 				return &cliError{exit: ExitError, code: "device_unavailable",
-					msg: fmt.Sprintf("device sign-in is not available on %s yet; run codeforge auth login without --device", s.Host)}
+					msg: fmt.Sprintf("device sign-in is not available on %s yet; run pj auth login without --device", s.Host)}
 			}
 			if err != nil {
 				return err

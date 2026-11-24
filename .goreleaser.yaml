@@ -1,16 +1,16 @@
-# GoReleaser configuration of the codeforge CLI: builds only. On a vX.Y.Z tag,
+# GoReleaser configuration of the PointJungle CLI: builds only. On a vX.Y.Z tag,
 # pj-goreleaser-build (pointjungle-ci `go` component) builds the archives and
 # pj-github-publish (`github` component) publishes them in the GitHub release,
 # with the CHANGELOG.md section written by pj-release as notes.
 # Check locally: goreleaser check && goreleaser release --snapshot --clean
 version: 2
 
-project_name: codeforge
+project_name: pj
 
 builds:
-  - id: codeforge
-    main: ./cmd/codeforge
-    binary: codeforge
+  - id: pj
+    main: ./cmd/pj
+    binary: pj
     env:
       - CGO_ENABLED=0
     goos: [linux, darwin, windows]
@@ -21,12 +21,12 @@ builds:
       - -s -w -X main.version={{ .Version }} -X main.commit={{ .ShortCommit }} -X main.date={{ .Date }}
 
 archives:
-  - id: codeforge
+  - id: pj
     formats: [tar.gz]
     format_overrides:
       - goos: windows
         formats: [zip]
-    name_template: "codeforge_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "pj_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
 checksum:
   name_template: checksums.txt

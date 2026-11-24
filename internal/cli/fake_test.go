@@ -14,11 +14,11 @@ import (
 	"testing"
 )
 
-// fakeCodeforge plays the codeforge API and its identity provider on one
+// fakeServer plays the PointJungle API and its identity provider on one
 // server: /api/cli/config, discovery, authorize (with PKCE), token
 // (authorization code, refresh token, device code), device authorization,
 // revocation and /api/profiles/me/.
-type fakeCodeforge struct {
+type fakeServer struct {
 	t      *testing.T
 	server *httptest.Server
 
@@ -44,8 +44,8 @@ type pendingCode struct {
 
 const clientID = "codeforge-cli"
 
-func newFake(t *testing.T) *fakeCodeforge {
-	f := &fakeCodeforge{
+func newFake(t *testing.T) *fakeServer {
+	f := &fakeServer{
 		t:         t,
 		codes:     map[string]pendingCode{},
 		access:    map[string]bool{},
@@ -66,7 +66,7 @@ func newFake(t *testing.T) *fakeCodeforge {
 	return f
 }
 
-func (f *fakeCodeforge) URL() string { return f.server.URL }
+func (f *fakeServer) URL() string { return f.server.URL }
 
 func writeJSON(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")
@@ -80,7 +80,7 @@ func randomToken() string {
 	return hex.EncodeToString(b)
 }
 
-func (f *fakeCodeforge) cliConfig(w http.ResponseWriter, _ *http.Request) {
+func (f *fakeServer) cliConfig(w http.ResponseWriter, _ *http.Request) {
 	cfg := map[string]any{
 		"api_url":      f.URL(),
 		"issuer":       f.URL(),
@@ -94,14 +94,14 @@ func (f *fakeCodeforge) cliConfig(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, 200, cfg)
 }
 
-func (f *fakeCodeforge) signedIn(w http.ResponseWriter, r *http.Request) {
+func (f *fakeServer) signedIn(w http.ResponseWriter, r *http.Request) {
 	f.mu.Lock()
 	f.landings = append(f.landings, r.URL.RawQuery)
 	f.mu.Unlock()
 	_, _ = w.Write([]byte("<h1>Signed in</h1>"))
 }
 
-func (f *fakeCodeforge) discovery(w http.ResponseWriter, _ *http.Request) {
+func (f *fakeServer) discovery(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, 200, map[string]string{
 		"issuer":                        f.URL(),
 		"authorization_endpoint":        f.URL() + "/authorize",
@@ -111,7 +111,7 @@ func (f *fakeCodeforge) discovery(w http.ResponseWriter, _ *http.Request) {
 	})
 }
 
-func (f *fakeCodeforge) authorize(w http.ResponseWriter, r *http.Request) {
+func (f *fakeServer) authorize(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	redirect, err := url.Parse(q.Get("redirect_uri"))
 	if err != nil || redirect.Hostname() != "127.0.0.1" || redirect.Path != "/callback" || redirect.Port() == "" {
@@ -141,7 +141,7 @@ func (f *fakeCodeforge) authorize(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, redirect.String(), http.StatusFound)
 }
 
-func (f *fakeCodeforge) issue(w http.ResponseWriter) {
+func (f *fakeServer) issue(w http.ResponseWriter) {
 	access, refresh := randomToken(), randomToken()
 	f.access[access] = true
 	f.refresh[refresh] = true
@@ -154,7 +154,7 @@ func (f *fakeCodeforge) issue(w http.ResponseWriter) {
 	})
 }
 
-func (f *fakeCodeforge) token(w http.ResponseWriter, r *http.Request) {
+func (f *fakeServer) token(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 	f.mu.Lock()
 	defer f.mu.Unlock()
@@ -193,7 +193,7 @@ func (f *fakeCodeforge) token(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (f *fakeCodeforge) device(w http.ResponseWriter, _ *http.Request) {
+func (f *fakeServer) device(w http.ResponseWriter, _ *http.Request) {
 	if !f.deviceAllowed {
 		writeJSON(w, 400, map[string]string{"error": "unauthorized_client"})
 		return
@@ -207,7 +207,7 @@ func (f *fakeCodeforge) device(w http.ResponseWriter, _ *http.Request) {
 	})
 }
 
-func (f *fakeCodeforge) revoke(w http.ResponseWriter, r *http.Request) {
+func (f *fakeServer) revoke(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 	f.mu.Lock()
 	defer f.mu.Unlock()
@@ -217,7 +217,7 @@ func (f *fakeCodeforge) revoke(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 }
 
-func (f *fakeCodeforge) me(w http.ResponseWriter, r *http.Request) {
+func (f *fakeServer) me(w http.ResponseWriter, r *http.Request) {
 	token := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 	f.mu.Lock()
 	valid := f.access[token]
@@ -232,7 +232,7 @@ func (f *fakeCodeforge) me(w http.ResponseWriter, r *http.Request) {
 }
 
 // invalidateAccessTokens makes the API refuse every current access token.
-func (f *fakeCodeforge) invalidateAccessTokens() {
+func (f *fakeServer) invalidateAccessTokens() {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	f.access = map[string]bool{}

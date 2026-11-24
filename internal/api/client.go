@@ -1,4 +1,4 @@
-// Package api calls the codeforge API as the signed-in person.
+// Package api calls the PointJungle API as the signed-in person.
 //
 // Each request carries the stored access token (Authorization: Bearer). When the
 // token has expired — or the API answers 401 — the client refreshes it once with
@@ -16,8 +16,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pointjungle/codeforge-cli/internal/signin"
-	"github.com/pointjungle/codeforge-cli/internal/tokenstore"
+	"github.com/pointjungle/cli/internal/signin"
+	"github.com/pointjungle/cli/internal/tokenstore"
 )
 
 var (

@@ -1,4 +1,4 @@
-// Package cli defines the codeforge commands.
+// Package cli defines the pj commands.
 //
 // Output contract — scripts and AI agents rely on it:
 //
@@ -21,11 +21,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/pointjungle/codeforge-cli/internal/api"
-	"github.com/pointjungle/codeforge-cli/internal/browser"
-	"github.com/pointjungle/codeforge-cli/internal/config"
-	"github.com/pointjungle/codeforge-cli/internal/httpclient"
-	"github.com/pointjungle/codeforge-cli/internal/tokenstore"
+	"github.com/pointjungle/cli/internal/api"
+	"github.com/pointjungle/cli/internal/browser"
+	"github.com/pointjungle/cli/internal/config"
+	"github.com/pointjungle/cli/internal/httpclient"
+	"github.com/pointjungle/cli/internal/tokenstore"
 )
 
 // Exit codes.
@@ -93,7 +93,7 @@ func usageError(err error) error {
 }
 
 func notSignedIn(host string) error {
-	login := "codeforge auth login"
+	login := "pj auth login"
 	if host != config.DefaultHost {
 		login += " --host " + host
 	}
@@ -154,8 +154,8 @@ func isCobraUsageError(err error) bool {
 
 func (a *App) rootCommand() *cobra.Command {
 	root := &cobra.Command{
-		Use:           "codeforge",
-		Short:         "Work with codeforge from your terminal",
+		Use:           "pj",
+		Short:         "Work with PointJungle from your terminal",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Args:          noArgs,
@@ -163,10 +163,10 @@ func (a *App) rootCommand() *cobra.Command {
 			return cmd.Help()
 		},
 	}
-	root.PersistentFlags().StringVar(&a.host, "host", "", "codeforge API host (default: from CODEFORGE_HOST, .codeforge/, config.toml, or production)")
+	root.PersistentFlags().StringVar(&a.host, "host", "", "PointJungle API host (default: from PJ_HOST, .pointjungle/, config.toml, or production)")
 	root.PersistentFlags().BoolVar(&a.json, "json", false, "write one JSON document to stdout")
-	// --host targets another codeforge (staging, a local backend): it is meant
-	// for codeforge's developers, so it stays out of --help.
+	// --host targets another PointJungle (staging, a local backend): it is meant
+	// for PointJungle's developers, so it stays out of --help.
 	_ = root.PersistentFlags().MarkHidden("host")
 	root.SetFlagErrorFunc(func(_ *cobra.Command, err error) error { return usageError(err) })
 	root.AddCommand(a.authCommand(), a.versionCommand())

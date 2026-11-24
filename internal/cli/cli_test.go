@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pointjungle/codeforge-cli/internal/config"
+	"github.com/pointjungle/cli/internal/config"
 )
 
 type run struct {
@@ -32,7 +32,7 @@ func (r run) json(t *testing.T) map[string]any {
 
 type harness struct {
 	t      *testing.T
-	fake   *fakeCodeforge
+	fake   *fakeServer
 	dir    string
 	env    map[string]string
 	now    func() time.Time
@@ -47,9 +47,9 @@ func newHarness(t *testing.T) *harness {
 		fake: fake,
 		dir:  dir,
 		env: map[string]string{
-			"CODEFORGE_CONFIG_DIR":  dir,
-			"CODEFORGE_TOKEN_STORE": "file",
-			"CODEFORGE_HOST":        fake.URL(),
+			"PJ_CONFIG_DIR":  dir,
+			"PJ_TOKEN_STORE": "file",
+			"PJ_HOST":        fake.URL(),
 		},
 		now:    time.Now,
 		browse: browse(t),
@@ -249,7 +249,7 @@ func TestUsageErrors(t *testing.T) {
 func TestNotSignedInHumanMessage(t *testing.T) {
 	h := newHarness(t)
 	r := h.run("auth", "status")
-	if r.code != ExitNotSignedIn || !strings.Contains(r.stderr, "codeforge auth login --host") {
+	if r.code != ExitNotSignedIn || !strings.Contains(r.stderr, "pj auth login --host") {
 		t.Fatalf("status: %d %q", r.code, r.stderr)
 	}
 }
@@ -271,7 +271,7 @@ func TestVersion(t *testing.T) {
 
 func TestHostFlagWinsOverEnvironment(t *testing.T) {
 	h := newHarness(t)
-	h.env["CODEFORGE_HOST"] = "unreachable.invalid"
+	h.env["PJ_HOST"] = "unreachable.invalid"
 	r := h.run("auth", "login", "--host", h.fake.URL(), "--json")
 	if r.code != ExitOK || r.json(t)["host"] != h.fake.URL() {
 		t.Fatalf("login with --host: %d %s %s", r.code, r.stdout, r.stderr)
@@ -280,10 +280,10 @@ func TestHostFlagWinsOverEnvironment(t *testing.T) {
 
 func TestNotSignedInHintOmitsTheDefaultHost(t *testing.T) {
 	var ce *cliError
-	if !errors.As(notSignedIn(config.DefaultHost), &ce) || ce.msg != "not signed in to "+config.DefaultHost+"; run: codeforge auth login" {
+	if !errors.As(notSignedIn(config.DefaultHost), &ce) || ce.msg != "not signed in to "+config.DefaultHost+"; run: pj auth login" {
 		t.Fatalf("default host: %v", ce)
 	}
-	if !errors.As(notSignedIn("http://localhost:8000"), &ce) || !strings.HasSuffix(ce.msg, "codeforge auth login --host http://localhost:8000") {
+	if !errors.As(notSignedIn("http://localhost:8000"), &ce) || !strings.HasSuffix(ce.msg, "pj auth login --host http://localhost:8000") {
 		t.Fatalf("other host: %v", ce)
 	}
 }
@@ -294,7 +294,7 @@ func TestHostFlagIsHiddenButWorks(t *testing.T) {
 	if strings.Contains(r.stdout, "--host") {
 		t.Fatalf("--host shown in help:\n%s", r.stdout)
 	}
-	delete(h.env, "CODEFORGE_HOST")
+	delete(h.env, "PJ_HOST")
 	if r := h.run("auth", "status", "--host", h.fake.URL()); r.code != ExitNotSignedIn || !strings.Contains(r.stderr, h.fake.URL()) {
 		t.Fatalf("--host not accepted: %+v", r)
 	}
@@ -341,7 +341,7 @@ func TestLoginOnAnOlderHostShowsTheCLIPage(t *testing.T) {
 	if r := h.run("auth", "login"); r.code != ExitOK {
 		t.Fatalf("login: %+v", r)
 	}
-	if !strings.Contains(page, "Signed in to codeforge") || len(h.fake.landings) != 0 {
+	if !strings.Contains(page, "Signed in to PointJungle") || len(h.fake.landings) != 0 {
 		t.Fatalf("page = %q, landings = %q", page, h.fake.landings)
 	}
 }

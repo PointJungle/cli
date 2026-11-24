@@ -12,8 +12,8 @@ import (
 )
 
 // New returns the CLI's HTTP client. Every request carries userAgent (see
-// UserAgent), so that codeforge can tell CLI versions apart. Like browsers, it
-// sends every *.localhost name to this machine (RFC 6761): a local codeforge
+// UserAgent), so that the backend can tell CLI versions apart. Like browsers, it
+// sends every *.localhost name to this machine (RFC 6761): a local backend
 // serves its sign-in pages on names such as accounts.localhost, which DNS
 // servers do not know.
 func New(timeout time.Duration, userAgent string) *http.Client {
@@ -25,9 +25,9 @@ func New(timeout time.Duration, userAgent string) *http.Client {
 	return &http.Client{Timeout: timeout, Transport: userAgentTransport{agent: userAgent, next: transport}}
 }
 
-// UserAgent is "codeforge-cli/<version> (<os>; <arch>)".
+// UserAgent is "pj-cli/<version> (<os>; <arch>)".
 func UserAgent(version string) string {
-	return fmt.Sprintf("codeforge-cli/%s (%s; %s)", version, runtime.GOOS, runtime.GOARCH)
+	return fmt.Sprintf("pj-cli/%s (%s; %s)", version, runtime.GOOS, runtime.GOARCH)
 }
 
 type userAgentTransport struct {
