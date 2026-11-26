@@ -1,9 +1,9 @@
 # PointJungle CLI
 
-`pj`, the command line tool of **[PointJungle](https://codeforge.pointjungle.com)**, the platform to deploy and run pipelines. It works with PointJungle from your terminal, your scripts and your AI agents. One binary for Linux, macOS and Windows.
+`pj`, the command line tool of **[PointJungle](https://pointjungle.com)**, the platform to deploy and run pipelines. It works with PointJungle from your terminal, your scripts and your AI agents. One binary for Linux, macOS and Windows.
 
-- **PointJungle**: https://codeforge.pointjungle.com
-- **Documentation**: https://codeforge.pointjungle.com/docs
+- **PointJungle**: https://pointjungle.com
+- **Documentation**: https://pointjungle.com/docs
 
 ## Install
 
@@ -28,7 +28,7 @@ Every command speaks JSON with `--json` and returns stable exit codes.
 
 | Documentation | |
 |---|---|
-| [CLI guide](docs/README.md) | prerequisites, setup, sign in, commands, exit codes (also on [PointJungle's docs](https://codeforge.pointjungle.com/docs/cli)) |
+| [CLI guide](docs/README.md) | prerequisites, setup, sign in, commands, exit codes (also on [PointJungle's docs](https://pointjungle.com/docs/cli)) |
 | [Settings](docs/reference/settings.md) | configuration directory, environment variables |
 | [Token storage](docs/reference/token_storage.md) | where the CLI keeps your sign-in |
 | [Changelog](CHANGELOG.md) | what changed in each release |

@@ -12,13 +12,13 @@ func env(values map[string]string) func(string) string {
 
 func TestNormalizeHost(t *testing.T) {
 	cases := map[string]string{
-		"api.codeforge.pointjungle.com":          "https://api.codeforge.pointjungle.com",
-		"https://api.codeforge.pointjungle.com/": "https://api.codeforge.pointjungle.com",
-		"localhost:8000":                         "http://localhost:8000",
-		"api.localhost:8000":                     "http://api.localhost:8000",
-		"127.0.0.1:8000":                         "http://127.0.0.1:8000",
-		"[::1]:8000":                             "http://[::1]:8000",
-		"http://staging.example.com":             "http://staging.example.com",
+		"api.pointjungle.com":          "https://api.pointjungle.com",
+		"https://api.pointjungle.com/": "https://api.pointjungle.com",
+		"localhost:8000":               "http://localhost:8000",
+		"api.localhost:8000":           "http://api.localhost:8000",
+		"127.0.0.1:8000":               "http://127.0.0.1:8000",
+		"[::1]:8000":                   "http://[::1]:8000",
+		"http://staging.example.com":   "http://staging.example.com",
 	}
 	for in, want := range cases {
 		got, err := NormalizeHost(in)

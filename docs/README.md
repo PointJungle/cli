@@ -1,10 +1,10 @@
 # The PointJungle CLI
 
-`pj` works with [PointJungle](https://codeforge.pointjungle.com) from your terminal, your scripts and your AI agents. It is one binary for Linux, macOS and Windows (amd64 and arm64).
+`pj` works with [PointJungle](https://pointjungle.com) from your terminal, your scripts and your AI agents. It is one binary for Linux, macOS and Windows (amd64 and arm64).
 
 ## Prerequisites
 
-- A PointJungle account. Create one by signing up on [PointJungle](https://codeforge.pointjungle.com).
+- A PointJungle account. Create one by signing up on [PointJungle](https://pointjungle.com).
 - A browser on the machine where you run `pj`, to sign in.
 
 ## Setup
@@ -27,9 +27,9 @@ Archive or `go install`: [setup/windows.md](setup/windows.md).
 $ pj auth login
 Opening your browser to sign in. If it does not open, visit:
 
-  https://api.codeforge.pointjungle.com/identity/o/authorize?client_id=codeforge-cli&…
+  https://api.pointjungle.com/identity/o/authorize?client_id=codeforge-cli&…
 
-Signed in to https://api.codeforge.pointjungle.com as ada@example.com.
+Signed in to https://api.pointjungle.com as ada@example.com.
 ```
 
 Your browser opens on the PointJungle sign-in page; once you have signed in, the tab tells you to go back to the terminal. The CLI keeps the tokens it receives and renews them without asking, until you sign out.

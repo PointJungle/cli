@@ -26,7 +26,7 @@ import (
 )
 
 // DefaultHost is the production API.
-const DefaultHost = "https://api.codeforge.pointjungle.com"
+const DefaultHost = "https://api.pointjungle.com"
 
 // Source tells where a setting came from.
 type Source string
@@ -41,7 +41,7 @@ const (
 
 // Settings are the resolved settings of one command.
 type Settings struct {
-	// Host is the base URL of the PointJungle API, e.g. https://api.codeforge.pointjungle.com.
+	// Host is the base URL of the PointJungle API, e.g. https://api.pointjungle.com.
 	Host       string `json:"host"`
 	HostSource Source `json:"host_source"`
 	// Dir is the configuration directory (config.toml, tokens file).
